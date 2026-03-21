@@ -1,4 +1,5 @@
 import { ArrowDown, TrendingUp, Shield, BarChart3 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { FloatingCube, FloatingDiamond, FloatingPyramid, FloatingSphere, FloatingOctahedron, Chart3D, LineGraph3D, FloatingRing } from './3DElements';
 
