@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
@@ -102,6 +103,12 @@ const PlaceRequest = () => {
                 </button>
               </form>
             )}
+
+            <div className="mt-6 text-center">
+              <Link to="/track-request" className="text-xs text-primary hover:underline">
+                Already have a tracking ID? Track your request →
+              </Link>
+            </div>
           </div>
         </div>
       </div>
