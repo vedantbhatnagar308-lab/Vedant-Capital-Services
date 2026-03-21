@@ -1,5 +1,6 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useEffect, useState } from 'react';
+import { FloatingOctahedron, FloatingSphere, PieChart3D } from './3DElements';
 
 const stats = [
   { value: 600, suffix: '+', label: 'Client Interactions' },
@@ -33,8 +34,14 @@ const StatsSection = () => {
   const { ref, isVisible } = useScrollReveal();
 
   return (
-    <section className="section-padding relative" ref={ref}>
-      <div className="container mx-auto px-4 md:px-8">
+    <section className="section-padding relative overflow-hidden" ref={ref}>
+      {/* 3D background */}
+      <FloatingOctahedron className="absolute top-8 right-12 floating rotate-12 hidden lg:block" size={55} />
+      <FloatingSphere className="absolute bottom-10 left-10 floating-delayed hidden lg:block" size={70} />
+      <PieChart3D className="absolute top-1/2 right-[3%] floating-slow hidden xl:block" />
+      <div className="absolute right-0 top-0 w-80 h-80 rounded-full bg-secondary/3 blur-3xl pointer-events-none" />
+
+      <div className="container mx-auto px-4 md:px-8 relative">
         <div className={`text-center mb-12 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
             Why <span className="text-gradient-gold">Vedant Capital Service</span>
@@ -44,10 +51,10 @@ const StatsSection = () => {
           {stats.map((s, i) => (
             <div
               key={i}
-              className={`card-3d rounded-2xl p-6 text-center ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+              className={`card-3d rounded-2xl p-6 text-center group hover:border-primary/20 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
               style={{ animationDelay: `${i * 0.08}s` }}
             >
-              <div className="text-2xl md:text-3xl font-display font-bold text-gradient-gold mb-2">
+              <div className="text-2xl md:text-3xl font-display font-bold text-gradient-gold mb-2 group-hover:scale-110 transition-transform duration-300">
                 <AnimatedNumber target={s.value} prefix={s.prefix} suffix={s.suffix} active={isVisible} />
               </div>
               <div className="text-xs text-muted-foreground">{s.label}</div>

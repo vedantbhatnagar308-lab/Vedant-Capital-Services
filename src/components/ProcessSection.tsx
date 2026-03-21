@@ -1,4 +1,5 @@
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { FloatingCube, FloatingDiamond, FloatingRing } from './3DElements';
 
 const steps = [
   { letter: 'R', title: 'Ring Up', desc: 'The in-house sales team engages in discussions with the client.' },
@@ -16,6 +17,15 @@ const ProcessSection = () => {
   return (
     <section id="process" className="section-padding-lg relative overflow-hidden" ref={ref}>
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+      <div className="absolute left-0 bottom-0 w-72 h-72 rounded-full bg-secondary/3 blur-3xl pointer-events-none" />
+
+      {/* 3D shapes */}
+      <FloatingCube className="absolute top-16 left-8 floating rotate-[25deg] hidden lg:block" size={55} />
+      <FloatingDiamond className="absolute bottom-20 right-12 floating-delayed -rotate-12 hidden lg:block" size={50} />
+      <FloatingRing className="absolute top-1/3 right-[5%] floating-slow rotate-[-15deg] hidden lg:block" size={75} />
+
+      {/* Animated orbit ring */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-primary/5 spin-very-slow pointer-events-none hidden xl:block" />
 
       <div className="container mx-auto px-4 md:px-8 relative">
         <div className={`text-center mb-16 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
@@ -26,8 +36,9 @@ const ProcessSection = () => {
         </div>
 
         <div className="relative max-w-4xl mx-auto">
-          {/* Timeline line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/60 via-secondary/40 to-primary/60 hidden sm:block" />
+          {/* Timeline line with glow */}
+          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px hidden sm:block"
+            style={{ background: 'linear-gradient(to bottom, hsla(var(--gold), 0.6), hsla(var(--blue), 0.4), hsla(var(--gold), 0.6))' }} />
 
           {steps.map((s, i) => {
             const isLeft = i % 2 === 0;
@@ -39,7 +50,8 @@ const ProcessSection = () => {
               >
                 {/* Mobile layout */}
                 <div className="sm:hidden flex gap-4 items-start w-full">
-                  <div className="w-16 h-16 rounded-2xl gradient-gold flex items-center justify-center shrink-0 text-primary-foreground font-display font-bold text-2xl shadow-lg shadow-primary/20">
+                  <div className="w-16 h-16 rounded-2xl gradient-gold flex items-center justify-center shrink-0 text-primary-foreground font-display font-bold text-2xl shadow-lg shadow-primary/20 preserve-3d"
+                    style={{ transform: 'rotateY(-10deg) rotateX(5deg)' }}>
                     {s.letter}
                   </div>
                   <div>
@@ -58,8 +70,11 @@ const ProcessSection = () => {
                       <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">{s.desc}</p>
                     </div>
                   </div>
-                  <div className="relative z-10 w-14 h-14 rounded-2xl gradient-gold flex items-center justify-center text-primary-foreground font-display font-bold text-xl shadow-lg shadow-primary/20 order-2">
-                    {s.letter}
+                  <div className="relative z-10 perspective-1000 order-2">
+                    <div className="w-14 h-14 rounded-2xl gradient-gold flex items-center justify-center text-primary-foreground font-display font-bold text-xl shadow-lg shadow-primary/30 preserve-3d hover:scale-110 transition-transform duration-300"
+                      style={{ boxShadow: '0 0 25px hsla(var(--gold), 0.3), 0 4px 15px hsla(0,0%,0%,0.3)' }}>
+                      {s.letter}
+                    </div>
                   </div>
                   <div className={`${isLeft ? 'order-3' : ''}`} />
                 </div>
