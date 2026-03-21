@@ -8,7 +8,6 @@ import PlaceRequest from "./pages/PlaceRequest";
 import TrackRequest from "./pages/TrackRequest";
 import Login from "./pages/Login";
 import AdminPanel from "./pages/AdminPanel";
-import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,7 +24,6 @@ const App = () => (
           <Route path="/track-request" element={<TrackRequest />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
