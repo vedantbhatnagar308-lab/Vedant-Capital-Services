@@ -110,6 +110,7 @@ const PlaceRequest = () => {
               </Link>
             </div>
           </div>
+        </div>
       </div>
       <Footer />
     </div>
