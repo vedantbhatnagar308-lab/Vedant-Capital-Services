@@ -83,9 +83,9 @@ const HeroSection = () => {
             <a href="#services" className="btn-3d px-8 py-3.5 rounded-xl text-sm font-bold inline-flex items-center gap-2">
               Explore Services
             </a>
-            <a href="#contact" className="btn-3d-outline px-8 py-3.5 rounded-xl text-sm font-bold inline-flex items-center gap-2">
-              Free Consultation
-            </a>
+            <Link to="/place-request" className="btn-3d-outline px-8 py-3.5 rounded-xl text-sm font-bold inline-flex items-center gap-2">
+              Place a Request
+            </Link>
           </div>
 
           {/* Stats row */}

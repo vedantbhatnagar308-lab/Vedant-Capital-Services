@@ -78,7 +78,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Link to="/login" onClick={() => setOpen(false)} className="px-4 py-3 text-sm font-semibold btn-3d rounded-lg text-center mt-2">
-              Client Login
+              Admin Login
             </Link>
           </div>
         </div>
