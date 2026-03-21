@@ -194,6 +194,14 @@
     animation: float 8s ease-in-out infinite 1s;
   }
 
+  .spin-very-slow {
+    animation: spin-slow 60s linear infinite;
+  }
+
+  .spin-very-slow-reverse {
+    animation: spin-slow 80s linear infinite reverse;
+  }
+
   .section-padding {
     @apply py-20 md:py-28;
   }
