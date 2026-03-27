@@ -3,6 +3,69 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
+// Simple SMTP email sender for Gmail
+async function sendEmailViaSMTP(to: string, subject: string, body: string) {
+  const smtpUser = Deno.env.get('SMTP_USER')!;
+  const smtpPass = Deno.env.get('SMTP_PASSWORD')!;
+
+  const conn = await Deno.connect({ hostname: 'smtp.gmail.com', port: 465 });
+  // Use startTls for port 587, or direct TLS for 465
+  const tlsConn = await Deno.startTls(conn, { hostname: 'smtp.gmail.com' });
+
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+
+  async function send(data: string) {
+    await tlsConn.write(encoder.encode(data + '\r\n'));
+  }
+
+  async function read(): Promise<string> {
+    const buf = new Uint8Array(1024);
+    const n = await tlsConn.read(buf);
+    return decoder.decode(buf.subarray(0, n!));
+  }
+
+  // Read greeting
+  await read();
+  await send(`EHLO localhost`);
+  await read();
+
+  // AUTH LOGIN
+  await send(`AUTH LOGIN`);
+  await read();
+  await send(btoa(smtpUser));
+  await read();
+  await send(btoa(smtpPass));
+  const authRes = await read();
+  if (!authRes.startsWith('235')) {
+    tlsConn.close();
+    throw new Error(`SMTP Auth failed: ${authRes}`);
+  }
+
+  await send(`MAIL FROM:<${smtpUser}>`);
+  await read();
+  await send(`RCPT TO:<${to}>`);
+  await read();
+  await send(`DATA`);
+  await read();
+
+  const message = [
+    `From: Vedant Capital Service <${smtpUser}>`,
+    `To: ${to}`,
+    `Subject: ${subject}`,
+    `MIME-Version: 1.0`,
+    `Content-Type: text/plain; charset=utf-8`,
+    ``,
+    body,
+    `.`,
+  ].join('\r\n');
+
+  await send(message);
+  await read();
+  await send(`QUIT`);
+  tlsConn.close();
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -10,16 +73,7 @@ Deno.serve(async (req) => {
 
   try {
     const { name, email, phone, service, details, trackingId } = await req.json();
-
     const ADMIN_EMAIL = 'vedantbhatnagar308@gmail.com';
-
-    // Use Supabase's built-in email via the REST API
-    const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
-    // Send email using Resend or a simple SMTP approach
-    // For now, we'll log the notification and use Supabase's built-in hooks
-    // We'll use a simple fetch to a free email API
 
     const emailBody = `
 New Request Received!
@@ -34,35 +88,13 @@ Details: ${details || 'N/A'}
 Please login to the admin panel to manage this request.
     `.trim();
 
-    console.log(`📧 Email notification for ${ADMIN_EMAIL}:`);
-    console.log(emailBody);
+    const subject = `New Request: ${service} - ${trackingId}`;
 
-    // Try sending via Resend if API key is available
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-    
-    if (RESEND_API_KEY) {
-      const emailRes = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'Vedant Capital Service <onboarding@resend.dev>',
-          to: [ADMIN_EMAIL],
-          subject: `New Request: ${service} - ${trackingId}`,
-          text: emailBody,
-        }),
-      });
-
-      const emailData = await emailRes.json();
-      console.log('Email sent:', emailData);
-    } else {
-      console.log('RESEND_API_KEY not set - email logged but not sent. Add the key to enable email delivery.');
-    }
+    await sendEmailViaSMTP(ADMIN_EMAIL, subject, emailBody);
+    console.log('📧 Email sent via Gmail SMTP');
 
     return new Response(
-      JSON.stringify({ success: true, message: 'Notification processed' }),
+      JSON.stringify({ success: true, message: 'Email sent via SMTP' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
