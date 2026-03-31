@@ -3,51 +3,72 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-// Simple SMTP email sender for Gmail
 async function sendEmailViaSMTP(to: string, subject: string, body: string) {
   const smtpUser = Deno.env.get('SMTP_USER')!;
   const smtpPass = Deno.env.get('SMTP_PASSWORD')!;
 
-  const conn = await Deno.connect({ hostname: 'smtp.gmail.com', port: 465 });
-  // Use startTls for port 587, or direct TLS for 465
-  const tlsConn = await Deno.startTls(conn, { hostname: 'smtp.gmail.com' });
+  const conn = await Deno.connect({ hostname: 'smtp-mail.outlook.com', port: 587 });
 
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
   async function send(data: string) {
-    await tlsConn.write(encoder.encode(data + '\r\n'));
+    await conn.write(encoder.encode(data + '\r\n'));
   }
 
   async function read(): Promise<string> {
-    const buf = new Uint8Array(1024);
-    const n = await tlsConn.read(buf);
+    const buf = new Uint8Array(4096);
+    const n = await conn.read(buf);
     return decoder.decode(buf.subarray(0, n!));
   }
 
   // Read greeting
   await read();
-  await send(`EHLO localhost`);
+  await send('EHLO localhost');
   await read();
 
+  // STARTTLS
+  await send('STARTTLS');
+  const starttlsRes = await read();
+  if (!starttlsRes.startsWith('220')) {
+    conn.close();
+    throw new Error(`STARTTLS failed: ${starttlsRes}`);
+  }
+
+  const tlsConn = await Deno.startTls(conn, { hostname: 'smtp-mail.outlook.com' });
+
+  async function tlsSend(data: string) {
+    await tlsConn.write(encoder.encode(data + '\r\n'));
+  }
+
+  async function tlsRead(): Promise<string> {
+    const buf = new Uint8Array(4096);
+    const n = await tlsConn.read(buf);
+    return decoder.decode(buf.subarray(0, n!));
+  }
+
+  // Re-EHLO after TLS
+  await tlsSend('EHLO localhost');
+  await tlsRead();
+
   // AUTH LOGIN
-  await send(`AUTH LOGIN`);
-  await read();
-  await send(btoa(smtpUser));
-  await read();
-  await send(btoa(smtpPass));
-  const authRes = await read();
+  await tlsSend('AUTH LOGIN');
+  await tlsRead();
+  await tlsSend(btoa(smtpUser));
+  await tlsRead();
+  await tlsSend(btoa(smtpPass));
+  const authRes = await tlsRead();
   if (!authRes.startsWith('235')) {
     tlsConn.close();
     throw new Error(`SMTP Auth failed: ${authRes}`);
   }
 
-  await send(`MAIL FROM:<${smtpUser}>`);
-  await read();
-  await send(`RCPT TO:<${to}>`);
-  await read();
-  await send(`DATA`);
-  await read();
+  await tlsSend(`MAIL FROM:<${smtpUser}>`);
+  await tlsRead();
+  await tlsSend(`RCPT TO:<${to}>`);
+  await tlsRead();
+  await tlsSend('DATA');
+  await tlsRead();
 
   const message = [
     `From: Vedant Capital Service <${smtpUser}>`,
@@ -55,14 +76,14 @@ async function sendEmailViaSMTP(to: string, subject: string, body: string) {
     `Subject: ${subject}`,
     `MIME-Version: 1.0`,
     `Content-Type: text/plain; charset=utf-8`,
-    ``,
+    '',
     body,
-    `.`,
+    '.',
   ].join('\r\n');
 
-  await send(message);
-  await read();
-  await send(`QUIT`);
+  await tlsSend(message);
+  await tlsRead();
+  await tlsSend('QUIT');
   tlsConn.close();
 }
 
@@ -91,7 +112,7 @@ Please login to the admin panel to manage this request.
     const subject = `New Request: ${service} - ${trackingId}`;
 
     await sendEmailViaSMTP(ADMIN_EMAIL, subject, emailBody);
-    console.log('📧 Email sent via Gmail SMTP');
+    console.log('📧 Email sent via Hotmail SMTP');
 
     return new Response(
       JSON.stringify({ success: true, message: 'Email sent via SMTP' }),
