@@ -7,7 +7,7 @@ async function sendEmailViaSMTP(to: string, subject: string, body: string) {
   const smtpUser = Deno.env.get('SMTP_USER')!;
   const smtpPass = Deno.env.get('SMTP_PASSWORD')!;
 
-  const conn = await Deno.connect({ hostname: 'smtp-mail.outlook.com', port: 587 });
+  const conn = await Deno.connect({ hostname: 'smtp.gmail.com', port: 587 });
 
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
@@ -35,7 +35,7 @@ async function sendEmailViaSMTP(to: string, subject: string, body: string) {
     throw new Error(`STARTTLS failed: ${starttlsRes}`);
   }
 
-  const tlsConn = await Deno.startTls(conn, { hostname: 'smtp-mail.outlook.com' });
+  const tlsConn = await Deno.startTls(conn, { hostname: 'smtp.gmail.com' });
 
   async function tlsSend(data: string) {
     await tlsConn.write(encoder.encode(data + '\r\n'));
