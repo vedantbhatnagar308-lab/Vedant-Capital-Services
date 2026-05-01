@@ -97,7 +97,7 @@ const ContactSection = () => {
               />
             </div>
             <a
-              href="https://www.google.com/maps/dir/?api=1&destination=Eldeco+Xpress+Plaza,+Udyan+II,+Raebareli+Road,+Lucknow,+Uttar+Pradesh+226025"
+              href="https://maps.app.goo.gl/XGqx732DigyYu7oN9"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-3d mt-3 inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl text-sm font-bold"
