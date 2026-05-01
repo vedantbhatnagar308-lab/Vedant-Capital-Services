@@ -80,6 +80,32 @@ const ContactSection = () => {
             ))}
           </div>
         </div>
+
+        {/* Google Map */}
+        <div className={`max-w-6xl mx-auto mt-12 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
+          <div className="card-3d rounded-2xl p-3 overflow-hidden">
+            <div className="rounded-xl overflow-hidden border border-border relative" style={{ height: '400px' }}>
+              <iframe
+                title="Vedant Capital Service Location"
+                src="https://www.google.com/maps?q=Eldeco+Xpress+Plaza,+Udyan+II,+Raebareli+Road,+Lucknow,+Uttar+Pradesh+226025&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=Eldeco+Xpress+Plaza,+Udyan+II,+Raebareli+Road,+Lucknow,+Uttar+Pradesh+226025"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-3d mt-3 inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl text-sm font-bold"
+            >
+              <MapPin size={16} /> Get Directions
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
