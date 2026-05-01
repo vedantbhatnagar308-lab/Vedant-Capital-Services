@@ -87,7 +87,7 @@ const ContactSection = () => {
             <div className="rounded-xl overflow-hidden border border-border relative" style={{ height: '400px' }}>
               <iframe
                 title="Vedant Capital Service Location"
-                src="https://www.google.com/maps?q=Eldeco+Xpress+Plaza,+Udyan+II,+Raebareli+Road,+Lucknow,+Uttar+Pradesh+226025&output=embed"
+                src="https://maps.google.com/maps?q=26.793611,80.951389&hl=en&z=17&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
