@@ -26,6 +26,7 @@ export function firebaseLoginError(error: unknown): string {
     case 'auth/invalid-credential':
     case 'auth/user-not-found':
     case 'auth/wrong-password': return 'The email or password is incorrect.';
+    case 'auth/configuration-not-found':
     case 'auth/operation-not-allowed': return 'Email/password sign-in needs to be enabled in Firebase.';
     case 'auth/too-many-requests': return 'Too many attempts. Please try again later.';
     case 'auth/network-request-failed': return 'Unable to connect. Check your internet connection.';
