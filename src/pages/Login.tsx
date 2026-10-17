@@ -3,7 +3,10 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { firebaseAuth } from '@/integrations/firebase/client';
+import { firebaseLoginError } from '@/lib/firebase-admin';
+import { Button } from '@/components/ui/button';
 
 const Login = () => {
   const { ref, isVisible } = useScrollReveal(0.1);
@@ -13,12 +16,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If already logged in, redirect to admin
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (session) navigate('/admin');
-    });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate('/admin');
+    return onAuthStateChanged(firebaseAuth, (user) => {
+      if (user) navigate('/admin', { replace: true });
     });
   }, [navigate]);
 
@@ -27,17 +26,14 @@ const Login = () => {
     setLoading(true);
     setError('');
 
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    });
-
-    if (authError) {
-      setError(authError.message);
-    } else {
-      navigate('/admin');
+    try {
+      await signInWithEmailAndPassword(firebaseAuth, form.email.trim(), form.password);
+      navigate('/admin', { replace: true });
+    } catch (err) {
+      setError(firebaseLoginError(err));
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -60,13 +56,13 @@ const Login = () => {
                   {error}
                 </div>
               )}
-              <input type="email" placeholder="Admin Email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+              <input type="email" aria-label="Admin Email" autoComplete="username" placeholder="Admin Email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50" />
-              <input type="password" placeholder="Password" required value={form.password} onChange={e => setForm({ ...form, password: e.target.value })}
+              <input type="password" aria-label="Password" autoComplete="current-password" placeholder="Password" required value={form.password} onChange={e => setForm({ ...form, password: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50" />
-              <button type="submit" disabled={loading} className="btn-3d px-8 py-3.5 rounded-xl text-sm font-bold w-full disabled:opacity-50">
+              <Button type="submit" disabled={loading} className="btn-3d h-auto px-8 py-3.5 rounded-xl text-sm font-bold w-full disabled:opacity-50">
                 {loading ? 'Signing in...' : 'Sign In'}
-              </button>
+              </Button>
             </form>
 
             <div className="mt-6 text-center space-y-2">

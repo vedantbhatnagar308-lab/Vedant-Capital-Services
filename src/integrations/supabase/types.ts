@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      firebase_admin_roles: {
+        Row: {
+          created_at: string
+          firebase_uid: string
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          firebase_uid: string
+          role?: string
+        }
+        Update: {
+          created_at?: string
+          firebase_uid?: string
+          role?: string
+        }
+        Relationships: []
+      }
+      firebase_profiles: {
+        Row: {
+          display_name: string
+          email: string
+          firebase_uid: string
+          updated_at: string
+        }
+        Insert: {
+          display_name?: string
+          email?: string
+          firebase_uid: string
+          updated_at?: string
+        }
+        Update: {
+          display_name?: string
+          email?: string
+          firebase_uid?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       requests: {
         Row: {
           created_at: string
