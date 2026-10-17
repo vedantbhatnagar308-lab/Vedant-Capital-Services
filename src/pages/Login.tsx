@@ -3,9 +3,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Link, useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { firebaseAuth } from '@/integrations/firebase/client';
-import { adminApi, firebaseLoginError } from '@/lib/firebase-admin';
+import { firebaseLoginError } from '@/lib/firebase-admin';
 import { Button } from '@/components/ui/button';
 
 const Login = () => {
@@ -28,10 +28,8 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(firebaseAuth, form.email.trim(), form.password);
-      await adminApi({ action: 'profile' });
       navigate('/admin', { replace: true });
     } catch (err) {
-      await signOut(firebaseAuth);
       setError(firebaseLoginError(err));
     } finally {
       setLoading(false);
