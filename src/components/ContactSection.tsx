@@ -87,7 +87,7 @@ const ContactSection = () => {
             <div className="rounded-xl overflow-hidden border border-border relative" style={{ height: '400px' }}>
               <iframe
                 title="Vedant Capital Service Location"
-                src="https://maps.google.com/maps?q=26.793611,80.951389&hl=en&z=17&output=embed"
+                src="https://maps.google.com/maps?q=Vedant%20Capital%20Services%2C%20LGF%2024%2C%20Eldeco%20Xpress%20Plaza%2C%20Udyan-II%2C%20Raebareli%20Road%2C%20Lucknow%2C%20UP%20226025&hl=en&z=17&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -97,7 +97,7 @@ const ContactSection = () => {
               />
             </div>
             <a
-              href="https://maps.app.goo.gl/XGqx732DigyYu7oN9"
+              href="https://maps.app.goo.gl/oedZUSa7tgyou8M2A"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-3d mt-3 inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl text-sm font-bold"
