@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'About', href: '/#about' },
-  { label: 'Services', href: '/#services' },
-  { label: 'Process', href: '/#process' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Process', href: '/process' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const location = useLocation();
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll);
@@ -23,16 +22,10 @@ const Navbar = () => {
 
   const handleNavClick = (href: string) => {
     setOpen(false);
-    if (href.startsWith('/#')) {
-      const id = href.slice(2);
-      if (location.pathname === '/') {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-strong shadow-lg shadow-black/20' : 'bg-transparent'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-strong shadow-lg shadow-primary/10' : 'bg-background/80 backdrop-blur-md'}`}>
       <div className="container mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center font-display font-bold text-lg text-primary-foreground">

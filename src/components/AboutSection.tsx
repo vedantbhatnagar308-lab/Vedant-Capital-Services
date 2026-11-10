@@ -1,5 +1,6 @@
 import { CheckCircle } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { Link } from 'react-router-dom';
 
 const highlights = [
   'Recovery of Shares',
@@ -61,9 +62,9 @@ const AboutSection = () => {
               ))}
             </div>
 
-            <a href="#contact" className="btn-3d px-8 py-3.5 rounded-xl text-sm font-bold inline-block">
+            <Link to="/place-request" className="btn-3d px-8 py-3.5 rounded-xl text-sm font-bold inline-block">
               Get Started Today
-            </a>
+            </Link>
           </div>
         </div>
       </div>

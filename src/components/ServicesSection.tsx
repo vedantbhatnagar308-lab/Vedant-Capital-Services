@@ -2,6 +2,7 @@ import { FileText, Copy, Users, Landmark, PiggyBank, ShieldCheck } from 'lucide-
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { FloatingCube, FloatingDiamond, FloatingPyramid } from './3DElements';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const services = [
   { icon: FileText, title: 'Recovery of Shares', desc: 'Recover shares and dividends transferred to IEPF Authority' },
@@ -48,9 +49,9 @@ const ServiceCard = ({ s, i, isVisible }: { s: typeof services[0]; i: number; is
         </div>
         <h3 className="font-display text-xl font-bold text-foreground mb-3">{s.title}</h3>
         <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
-        <a href="#contact" className="inline-flex items-center gap-1 text-primary text-sm font-medium mt-5 hover:gap-2 transition-all duration-300">
+        <Link to="/contact" className="inline-flex items-center gap-1 text-primary text-sm font-medium mt-5 hover:gap-2 transition-all duration-300">
           Learn More →
-        </a>
+        </Link>
       </div>
     </div>
   );
