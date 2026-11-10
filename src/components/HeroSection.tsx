@@ -80,9 +80,9 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href="#services" className="btn-3d px-8 py-3.5 rounded-xl text-sm font-bold inline-flex items-center gap-2">
+            <Link to="/services" className="btn-3d px-8 py-3.5 rounded-xl text-sm font-bold inline-flex items-center gap-2">
               Explore Services
-            </a>
+            </Link>
             <Link to="/place-request" className="btn-3d-outline px-8 py-3.5 rounded-xl text-sm font-bold inline-flex items-center gap-2">
               Place a Request
             </Link>
@@ -104,9 +104,9 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <a href="#services" className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-primary transition-colors floating">
+      <Link to="/services" aria-label="Explore services" className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-primary transition-colors floating">
         <ArrowDown size={24} />
-      </a>
+      </Link>
     </section>
   );
 };

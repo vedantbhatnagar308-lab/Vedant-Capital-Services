@@ -14,8 +14,17 @@ const Footer = () => (
         <div>
           <h4 className="font-semibold text-foreground text-sm mb-3">Quick Links</h4>
           <div className="flex flex-col gap-2">
-            {['Home', 'About', 'Services', 'Contact'].map(l => (
-              <a key={l} href={`/#${l.toLowerCase()}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">{l}</a>
+            {[
+              { label: 'Home', href: '/' },
+              { label: 'About', href: '/about' },
+              { label: 'Services', href: '/services' },
+              { label: 'Process', href: '/process' },
+              { label: 'Results', href: '/results' },
+              { label: 'Testimonials', href: '/testimonials' },
+              { label: 'FAQ', href: '/faq' },
+              { label: 'Contact', href: '/contact' },
+            ].map(({ label, href }) => (
+              <Link key={label} to={href} className="text-xs text-muted-foreground hover:text-primary transition-colors">{label}</Link>
             ))}
           </div>
         </div>
@@ -33,6 +42,14 @@ const Footer = () => (
             <p>+91 9956304400</p>
             <p>info@vedantcapitalservices.in</p>
             <p>Lucknow, Uttar Pradesh</p>
+          </div>
+        </div>
+        <div>
+          <h4 className="font-semibold text-foreground text-sm mb-3">Requests</h4>
+          <div className="flex flex-col gap-2">
+            <Link to="/place-request" className="text-xs text-muted-foreground hover:text-primary transition-colors">Place a Request</Link>
+            <Link to="/track-request" className="text-xs text-muted-foreground hover:text-primary transition-colors">Track Request</Link>
+            <Link to="/login" className="text-xs text-muted-foreground hover:text-primary transition-colors">Admin Login</Link>
           </div>
         </div>
       </div>

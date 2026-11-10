@@ -4,3 +4,8 @@
 - [x] Store and edit administrator display-name profiles.
 - [x] Verify tests and public sign-in behavior; invalid tokens rejected, signed-out access redirected.
 - [ ] Verify authenticated management and profile save: Firebase returns configuration-not-found; requires enabling email/password, creating an administrator account, and providing its User UID for an explicit access grant.
+
+# Website presentation
+- [x] Apply light-blue page colors and dark-blue primary buttons.
+- [x] Split public informational sections into dedicated pages and update navigation links.
+- [ ] Verify page navigation and responsive appearance in the preview.
