@@ -36,24 +36,25 @@ const AboutSection = () => {
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-primary/90 via-primary/45 to-transparent p-6 pt-20 text-primary-foreground">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em]">Vedant Capital Service</p>
-                  <p className="mt-1 font-display text-xl font-semibold">Guidance for investments that need attention</p>
+                  <p className="mt-1 max-w-sm font-display text-xl font-semibold">Guidance for investments that need attention</p>
                 </div>
               </div>
             </div>
-            {/* Floating stat card */}
-            <div className="absolute -bottom-6 -right-2 w-40 overflow-hidden rounded-xl border border-border bg-card p-1 shadow-xl md:right-8 md:w-48">
-              <img
-                src={documentReviewImage}
-                alt="Investment documents being carefully reviewed"
-                width={1200}
-                height={912}
-                loading="lazy"
-                className="aspect-[4/3] w-full rounded-lg object-cover"
-              />
-            </div>
-            <div className="absolute -left-3 top-6 glass rounded-xl px-4 py-3 shadow-lg md:-left-5 md:px-5">
-              <div className="text-2xl font-display font-bold text-gradient-gold">17+</div>
-              <div className="text-xs text-muted-foreground">Years of experience</div>
+            <div className="mt-4 grid grid-cols-[1fr_auto] items-center gap-4">
+              <div className="rounded-xl border border-border bg-card px-4 py-3 md:px-5">
+                <div className="text-2xl font-display font-bold text-gradient-gold">17+</div>
+                <div className="text-xs text-muted-foreground">Years of experience</div>
+              </div>
+              <div className="w-36 overflow-hidden rounded-xl border border-border bg-card p-1 shadow-lg md:w-48">
+                <img
+                  src={documentReviewImage}
+                  alt="Investment documents being carefully reviewed"
+                  width={1200}
+                  height={912}
+                  loading="lazy"
+                  className="aspect-[4/3] w-full rounded-lg object-cover"
+                />
+              </div>
             </div>
           </div>
 
